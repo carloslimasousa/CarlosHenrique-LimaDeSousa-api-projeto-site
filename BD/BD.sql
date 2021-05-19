@@ -8,7 +8,7 @@ create table cadastro (
     email		varchar (50),
     senha		varchar (50),
     cpf			varchar (50),
-    d_nasci		varchar (50),
+    d_nasci		date,
     genero		varchar (20),
     telefone	varchar (15),
     juri_fisi	varchar (20),
@@ -21,3 +21,5 @@ create table cadastro (
     numero		varchar (10),
     complemento	varchar (30)
     );
+    
+    
