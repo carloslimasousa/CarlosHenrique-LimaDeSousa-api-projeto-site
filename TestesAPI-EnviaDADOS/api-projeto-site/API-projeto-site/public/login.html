@@ -24,7 +24,10 @@
                 </ul>
             </nav>
             <div class="tank_solution text_shadow"> Tank Solution </div>
-            <a href="home.html"> <div class="text_shadow voltar_inicio"> < Voltar Para Página Inicial </div> </a>
+            <a href="home.html">
+                <div class="text_shadow voltar_inicio">
+                    < Voltar Para Página Inicial </div>
+            </a>
         </div>
 
         <div class="div_info">
@@ -49,26 +52,30 @@
                     <br><br>
                 </div>
 
-                <div id="msg_erro" style="display: none;"> Seu nome de usuário ou senha podem estar incorretos </div>
+                <div id="msg_erro" style="display: none;">
+                    Seu nome de usuário ou senha podem estar incorretos
+                </div>
                 <br>
-                <span class="txt_esquerda"> Email: </span>
-                <br>
-                <input id="inp_email" class="input_style" type="email" placeholder="Email">
+                <form id="form_login" method="POST" onsubmit="return entrar()">
+                    <span class="txt_esquerda"> Email: </span>
+                    <br>
+                    <input id="inp_email" class="input_style" type="email" placeholder="Email" name="email">
 
-                <br><br>
+                    <br><br>
 
-                <span class="txt_esquerda"> Senha: </span>
-                <br>
-                <input id="inp_senha" class="input_style" type="password" required placeholder="Senha">
+                    <span class="txt_esquerda"> Senha: </span>
+                    <br>
+                    <input id="inp_senha" class="input_style" type="password" required placeholder="Senha" name="senha">
 
-                <br><br>
-                <a href=""> <u> Esqueceu a Senha </u> </a>
+                    <br><br>
+                    <u> Esqueceu a Senha </u>
             </div>
 
             <br>
 
             <!-- Proxima Pagina -->
-            <button onclick="verificar()" class="btn-final" type="submit"> Entrar </button>
+            <button class="btn-final" type="submit"> Entrar </button>
+            </form>
 
         </div>
     </main>
@@ -77,17 +84,34 @@
 </html>
 
 <script>
-    function verificar() {
-        var email = inp_email.value;
-        var senha = inp_senha.value;
+    function entrar() {
+        var formulario = new URLSearchParams(new FormData(form_login));
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            body: formulario
+        }).then(resposta => {
 
-        if (email == 'joao@ts.com' && senha == '1234'){
-            window.location.href = 'API-TankSolution/NODE4/index.html';
-            // window.location.replace('API-TankSolution/NODE4/index.html');
-        }
+            if (resposta.ok) {
 
-        else {
-            msg_erro.style.display = "block";
-        }
+                resposta.json().then(json => {
+
+                    sessionStorage.login_usuario_meuapp = json.login;
+                    sessionStorage.nome_usuario_meuapp = json.nome;
+
+                    window.location.href = 'index.html';
+                });
+
+            } else {
+
+                console.log('Erro de login!');
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizar_aguardar(texto);
+                });
+            }
+        });
+
+        return false;
     }
 </script>
