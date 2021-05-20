@@ -4,7 +4,7 @@ module.exports = {
     // altere APENAS username, password, database e host.
     username: 'wesley',
     password: '#Gfgrupo9',
-    database: 'database-demo',
+    database: 'tank-solution',
     host: 'server-bandtec-g9.database.windows.net',
     dialect: 'mssql',
     xuse_env_variable: 'DATABASE_URL',
